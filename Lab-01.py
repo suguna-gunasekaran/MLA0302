@@ -1,13 +1,29 @@
 import random
 
-# Grid Size
-SIZE = 5
+# ---------------- INPUT ----------------
 
-# Dirt Locations (+1 Reward)
-dirt = {(0, 2), (2, 1), (3, 3), (4, 4)}
+SIZE = int(input("Enter Grid Size: "))
 
-# Obstacle Locations (-1 Penalty)
-obstacles = {(1, 1), (2, 3), (3, 0)}
+print("Enter Robot Start Position")
+sx = int(input("Row: "))
+sy = int(input("Column: "))
+start = (sx, sy)
+
+# Dirt Locations
+dirt = set()
+n = int(input("Enter Number of Dirt Cells: "))
+print("Enter Dirt Cell Coordinates:")
+for i in range(n):
+    x, y = map(int, input().split())
+    dirt.add((x, y))
+
+# Obstacle Locations
+obstacles = set()
+m = int(input("Enter Number of Obstacle Cells: "))
+print("Enter Obstacle Cell Coordinates:")
+for i in range(m):
+    x, y = map(int, input().split())
+    obstacles.add((x, y))
 
 # Possible Moves
 moves = {
@@ -17,7 +33,6 @@ moves = {
     "RIGHT": (0, 1)
 }
 
-
 # Check valid position
 def valid(x, y):
     return 0 <= x < SIZE and 0 <= y < SIZE
@@ -26,7 +41,7 @@ def valid(x, y):
 # ---------------- Random Policy ----------------
 
 def random_policy():
-    position = (0, 0)
+    position = start
     dirt_left = set(dirt)
     reward = 0
     steps = 0
@@ -65,7 +80,7 @@ def random_policy():
 
 def greedy_policy():
 
-    position = (0, 0)
+    position = start
     dirt_left = set(dirt)
     reward = 0
 
@@ -73,25 +88,25 @@ def greedy_policy():
 
     while dirt_left:
 
-        # nearest dirt
+        # Find nearest dirt
         target = min(
             dirt_left,
-            key=lambda d: abs(position[0]-d[0]) + abs(position[1]-d[1])
+            key=lambda d: abs(position[0] - d[0]) + abs(position[1] - d[1])
         )
 
         # Move Row
         if position[0] < target[0]:
-            next_pos = (position[0]+1, position[1])
+            next_pos = (position[0] + 1, position[1])
 
         elif position[0] > target[0]:
-            next_pos = (position[0]-1, position[1])
+            next_pos = (position[0] - 1, position[1])
 
         # Move Column
         elif position[1] < target[1]:
-            next_pos = (position[0], position[1]+1)
+            next_pos = (position[0], position[1] + 1)
 
         elif position[1] > target[1]:
-            next_pos = (position[0], position[1]-1)
+            next_pos = (position[0], position[1] - 1)
 
         else:
             next_pos = position
@@ -115,13 +130,12 @@ def greedy_policy():
 
 # ---------------- Main ----------------
 
-print("Autonomous Cleaning Robot using MDP")
+print("\nAutonomous Cleaning Robot using MDP")
 
 print("\nGrid Size:", SIZE, "x", SIZE)
-print("Robot Start Position: (0,0)")
+print("Robot Start Position:", start)
 print("Dirt Cells:", dirt)
 print("Obstacle Cells:", obstacles)
 
 random_policy()
-
 greedy_policy()
