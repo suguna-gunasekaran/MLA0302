@@ -1,15 +1,25 @@
 # Policy Iteration for Delivery Drone
 
-SIZE = 5
+# Grid Size
+SIZE = int(input("Enter Grid Size (e.g., 5): "))
 
-# Goal (Delivery Point)
-GOAL = (4, 4)
+# Goal Position
+goal_x, goal_y = map(int, input("Enter Goal Position (row col): ").split())
+GOAL = (goal_x, goal_y)
 
 # Obstacles
-OBSTACLES = [(1, 2), (2, 2), (3, 1)]
+num_obstacles = int(input("Enter Number of Obstacles: "))
+OBSTACLES = []
+
+for i in range(num_obstacles):
+    x, y = map(int, input(f"Enter Obstacle {i+1} Position (row col): ").split())
+    OBSTACLES.append((x, y))
 
 # Discount Factor
-gamma = 0.9
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
+
+# Number of Policy Evaluation Iterations
+eval_iterations = int(input("Enter Policy Evaluation Iterations: "))
 
 # Possible Actions
 actions = {
@@ -41,7 +51,8 @@ stable = False
 while not stable:
 
     # -------- Policy Evaluation --------
-    for _ in range(20):
+    for _ in range(eval_iterations):
+
         newV = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
 
         for i in range(SIZE):
@@ -97,11 +108,11 @@ while not stable:
                 stable = False
 
 
-print("Optimal Value Function\n")
+print("\nOptimal Value Function\n")
 
 for row in V:
-    for v in row:
-        print(f"{v:6.2f}", end=" ")
+    for value in row:
+        print(f"{value:7.2f}", end=" ")
     print()
 
 print("\nOptimal Policy\n")
