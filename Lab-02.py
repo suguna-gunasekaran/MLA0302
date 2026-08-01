@@ -1,49 +1,57 @@
 # Policy Evaluation for Warehouse Robot
 
-SIZE = 5
+# Input Grid Size
+SIZE = int(input("Enter Grid Size (e.g., 5): "))
 
-# Rewards
-ITEMS = [(1, 1), (3, 2)]
-GOAL = (4, 4)
-OBSTACLES = [(2, 2), (3, 1)]
+# Input Items
+num_items = int(input("Enter number of item locations: "))
+ITEMS = []
 
-# Discount Factor
-gamma = 0.9
+for i in range(num_items):
+    x, y = map(int, input(f"Enter Item {i+1} position (row col): ").split())
+    ITEMS.append((x, y))
 
-# Number of Iterations
-iterations = 15
+# Input Goal
+goal_x, goal_y = map(int, input("Enter Goal position (row col): ").split())
+GOAL = (goal_x, goal_y)
+
+# Input Obstacles
+num_obstacles = int(input("Enter number of obstacles: "))
+OBSTACLES = []
+
+for i in range(num_obstacles):
+    x, y = map(int, input(f"Enter Obstacle {i+1} position (row col): ").split())
+    OBSTACLES.append((x, y))
+
+# Input Discount Factor
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
+
+# Input Number of Iterations
+iterations = int(input("Enter Number of Iterations: "))
 
 # Initialize Value Function
 V = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
 
 
 # Fixed Policy:
-# Move RIGHT if possible,
-# otherwise move DOWN.
+# Move RIGHT if possible, otherwise move DOWN
 def next_state(i, j):
-
     if j < SIZE - 1:
         return (i, j + 1)
-
     elif i < SIZE - 1:
         return (i + 1, j)
-
     else:
         return (i, j)
 
 
 # Reward Function
 def reward(state):
-
     if state in ITEMS:
         return 2
-
     elif state == GOAL:
         return 5
-
     elif state in OBSTACLES:
         return -2
-
     else:
         return 0
 
@@ -57,7 +65,6 @@ for k in range(iterations):
         for j in range(SIZE):
 
             s_next = next_state(i, j)
-
             r = reward(s_next)
 
             new_V[i][j] = r + gamma * V[s_next[0]][s_next[1]]
@@ -66,10 +73,10 @@ for k in range(iterations):
 
 
 # Display Final Value Function
-print("Warehouse Robot Policy Evaluation")
-print("---------------------------------\n")
+print("\nWarehouse Robot Policy Evaluation")
+print("---------------------------------")
 
 for row in V:
     for value in row:
-        print(f"{value:6.2f}", end=" ")
+        print(f"{value:7.2f}", end=" ")
     print()
