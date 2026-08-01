@@ -2,17 +2,25 @@ import random
 import math
 
 # -------------------------------
-# Price Options (Arms)
+# User Input
 # -------------------------------
-prices = [100, 150, 200, 250]
 
-# Probability that a customer buys at each price
-purchase_prob = [0.8, 0.6, 0.4, 0.2]
+n = int(input("Enter number of price options: "))
 
-customers = 500
+prices = []
+purchase_prob = []
+
+for i in range(n):
+    price = int(input(f"Enter Price {i+1}: "))
+    prob = float(input(f"Enter Purchase Probability for Price {price} (0 to 1): "))
+    prices.append(price)
+    purchase_prob.append(prob)
+
+customers = int(input("Enter number of customers: "))
+epsilon = float(input("Enter epsilon value (e.g., 0.1): "))
 
 
-# Simulate a customer purchase
+# Simulate Customer Purchase
 def get_reward(arm):
     if random.random() < purchase_prob[arm]:
         return prices[arm]
@@ -22,16 +30,14 @@ def get_reward(arm):
 # ===========================================
 # 1. Epsilon-Greedy
 # ===========================================
-epsilon = 0.1
-
-counts = [0] * len(prices)
-values = [0] * len(prices)
+counts = [0] * n
+values = [0] * n
 total_reward = 0
 
 for i in range(customers):
 
     if random.random() < epsilon:
-        arm = random.randint(0, len(prices)-1)
+        arm = random.randint(0, n - 1)
     else:
         arm = values.index(max(values))
 
@@ -48,8 +54,8 @@ epsilon_reward = total_reward
 # ===========================================
 # 2. UCB
 # ===========================================
-counts = [0] * len(prices)
-values = [0] * len(prices)
+counts = [0] * n
+values = [0] * n
 total_reward = 0
 
 for i in range(customers):
@@ -59,7 +65,7 @@ for i in range(customers):
     else:
         ucb_values = []
 
-        for j in range(len(prices)):
+        for j in range(n):
             bonus = math.sqrt((2 * math.log(i + 1)) / counts[j])
             ucb_values.append(values[j] + bonus)
 
@@ -78,8 +84,8 @@ ucb_reward = total_reward
 # ===========================================
 # 3. Thompson Sampling
 # ===========================================
-success = [1] * len(prices)
-failure = [1] * len(prices)
+success = [1] * n
+failure = [1] * n
 
 total_reward = 0
 
@@ -87,7 +93,7 @@ for i in range(customers):
 
     samples = []
 
-    for j in range(len(prices)):
+    for j in range(n):
         samples.append(random.betavariate(success[j], failure[j]))
 
     arm = samples.index(max(samples))
@@ -107,7 +113,7 @@ thompson_reward = total_reward
 # ===========================================
 # Display Results
 # ===========================================
-print("Dynamic Pricing using Multi-Armed Bandits")
+print("\nDynamic Pricing using Multi-Armed Bandits")
 print("----------------------------------------")
 print("Customers:", customers)
 
@@ -117,7 +123,6 @@ print("Epsilon-Greedy :", epsilon_reward)
 print("UCB            :", ucb_reward)
 print("Thompson Samp. :", thompson_reward)
 
-# Best Strategy
 revenues = {
     "Epsilon-Greedy": epsilon_reward,
     "UCB": ucb_reward,
