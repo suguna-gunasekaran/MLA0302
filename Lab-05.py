@@ -1,16 +1,29 @@
-# Value Iteration for Taxi Dispatching
+# Policy Iteration for Delivery Drone
 
-SIZE = 5
+# Grid Size
+SIZE = int(input("Enter Grid Size (e.g., 5): "))
 
-# Pick-up Point (Goal)
-GOAL = (4, 4)
+# Goal Position
+goal_x = int(input("Enter Goal Row: "))
+goal_y = int(input("Enter Goal Column: "))
+GOAL = (goal_x, goal_y)
 
 # Obstacles
-OBSTACLES = [(1, 2), (2, 2), (3, 1)]
+num_obstacles = int(input("Enter Number of Obstacles: "))
+OBSTACLES = []
 
-gamma = 0.9
-iterations = 20
+for i in range(num_obstacles):
+    x = int(input(f"Enter Obstacle {i+1} Row: "))
+    y = int(input(f"Enter Obstacle {i+1} Column: "))
+    OBSTACLES.append((x, y))
 
+# Discount Factor
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
+
+# Policy Evaluation Iterations
+eval_iterations = int(input("Enter Policy Evaluation Iterations: "))
+
+# Actions
 actions = {
     "U": (-1, 0),
     "D": (1, 0),
@@ -21,21 +34,49 @@ actions = {
 # Initialize Value Function
 V = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
 
+# Initial Policy
+policy = [["R" for _ in range(SIZE)] for _ in range(SIZE)]
 
+# Check Valid Position
 def valid(x, y):
     return 0 <= x < SIZE and 0 <= y < SIZE and (x, y) not in OBSTACLES
 
-
+# Reward Function
 def reward(state):
     if state == GOAL:
         return 10
     return -1
 
+stable = False
 
-# ---------------- Value Iteration ----------------
-for _ in range(iterations):
+while not stable:
 
-    newV = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
+    # Policy Evaluation
+    for _ in range(eval_iterations):
+
+        newV = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
+
+        for i in range(SIZE):
+            for j in range(SIZE):
+
+                if (i, j) == GOAL or (i, j) in OBSTACLES:
+                    continue
+
+                action = policy[i][j]
+                dx, dy = actions[action]
+
+                ni = i + dx
+                nj = j + dy
+
+                if not valid(ni, nj):
+                    ni, nj = i, j
+
+                newV[i][j] = reward((ni, nj)) + gamma * V[ni][nj]
+
+        V = newV
+
+    # Policy Improvement
+    stable = True
 
     for i in range(SIZE):
         for j in range(SIZE):
@@ -43,67 +84,44 @@ for _ in range(iterations):
             if (i, j) == GOAL or (i, j) in OBSTACLES:
                 continue
 
-            best = -9999
+            old_action = policy[i][j]
+            best_action = old_action
+            best_value = float("-inf")
 
-            for action in actions.values():
+            for action, (dx, dy) in actions.items():
 
-                ni = i + action[0]
-                nj = j + action[1]
+                ni = i + dx
+                nj = j + dy
 
                 if not valid(ni, nj):
                     ni, nj = i, j
 
                 value = reward((ni, nj)) + gamma * V[ni][nj]
 
-                if value > best:
-                    best = value
+                if value > best_value:
+                    best_value = value
+                    best_action = action
 
-            newV[i][j] = best
+            policy[i][j] = best_action
 
-    V = newV
+            if old_action != best_action:
+                stable = False
 
-# -------- Extract Optimal Policy --------
-policy = [["" for _ in range(SIZE)] for _ in range(SIZE)]
-
-for i in range(SIZE):
-    for j in range(SIZE):
-
-        if (i, j) == GOAL:
-            policy[i][j] = "G"
-            continue
-
-        if (i, j) in OBSTACLES:
-            policy[i][j] = "X"
-            continue
-
-        best_action = ""
-        best_value = -9999
-
-        for name, action in actions.items():
-
-            ni = i + action[0]
-            nj = j + action[1]
-
-            if not valid(ni, nj):
-                ni, nj = i, j
-
-            value = reward((ni, nj)) + gamma * V[ni][nj]
-
-            if value > best_value:
-                best_value = value
-                best_action = name
-
-        policy[i][j] = best_action
-
-# -------- Display Results --------
-print("Optimal Value Function\n")
-
+# Display Value Function
+print("\nOptimal Value Function:\n")
 for row in V:
     for value in row:
-        print(f"{value:6.2f}", end=" ")
+        print(f"{value:7.2f}", end=" ")
     print()
 
-print("\nOptimal Dispatch Policy\n")
-
-for row in policy:
-    print(" ".join(row))
+# Display Policy
+print("\nOptimal Policy:\n")
+for i in range(SIZE):
+    for j in range(SIZE):
+        if (i, j) == GOAL:
+            print(" G ", end=" ")
+        elif (i, j) in OBSTACLES:
+            print(" X ", end=" ")
+        else:
+            print(policy[i][j], end="  ")
+    print()
