@@ -1,128 +1,127 @@
-import random
-import math
+# Policy Iteration for Delivery Drone
 
-# ---------------------------
-# Advertisements (Arms)
-# ---------------------------
-ads = ["Ad A", "Ad B", "Ad C", "Ad D"]
+# Grid Size
+SIZE = int(input("Enter Grid Size (e.g., 5): "))
 
-# Probability of click for each ad
-click_prob = [0.15, 0.25, 0.35, 0.20]
+# Goal Position
+goal_x = int(input("Enter Goal Row: "))
+goal_y = int(input("Enter Goal Column: "))
+GOAL = (goal_x, goal_y)
 
-users = 1000
+# Obstacles
+num_obstacles = int(input("Enter Number of Obstacles: "))
+OBSTACLES = []
 
+for i in range(num_obstacles):
+    x = int(input(f"Enter Obstacle {i+1} Row: "))
+    y = int(input(f"Enter Obstacle {i+1} Column: "))
+    OBSTACLES.append((x, y))
 
-# Simulate user click
-def get_reward(ad):
-    if random.random() < click_prob[ad]:
-        return 1
-    return 0
+# Discount Factor
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
 
+# Policy Evaluation Iterations
+eval_iterations = int(input("Enter Policy Evaluation Iterations: "))
 
-# =====================================
-# 1. Epsilon-Greedy
-# =====================================
-epsilon = 0.1
-
-counts = [0] * len(ads)
-values = [0] * len(ads)
-clicks = 0
-
-for i in range(users):
-
-    if random.random() < epsilon:
-        arm = random.randint(0, len(ads)-1)
-    else:
-        arm = values.index(max(values))
-
-    reward = get_reward(arm)
-
-    counts[arm] += 1
-    clicks += reward
-
-    values[arm] += (reward - values[arm]) / counts[arm]
-
-epsilon_ctr = clicks / users
-
-
-# =====================================
-# 2. UCB
-# =====================================
-counts = [0] * len(ads)
-values = [0] * len(ads)
-clicks = 0
-
-for i in range(users):
-
-    if 0 in counts:
-        arm = counts.index(0)
-    else:
-        ucb = []
-
-        for j in range(len(ads)):
-            bonus = math.sqrt((2 * math.log(i + 1)) / counts[j])
-            ucb.append(values[j] + bonus)
-
-        arm = ucb.index(max(ucb))
-
-    reward = get_reward(arm)
-
-    counts[arm] += 1
-    clicks += reward
-
-    values[arm] += (reward - values[arm]) / counts[arm]
-
-ucb_ctr = clicks / users
-
-
-# =====================================
-# 3. Thompson Sampling
-# =====================================
-success = [1] * len(ads)
-failure = [1] * len(ads)
-
-clicks = 0
-
-for i in range(users):
-
-    samples = []
-
-    for j in range(len(ads)):
-        samples.append(random.betavariate(success[j], failure[j]))
-
-    arm = samples.index(max(samples))
-
-    reward = get_reward(arm)
-
-    clicks += reward
-
-    if reward == 1:
-        success[arm] += 1
-    else:
-        failure[arm] += 1
-
-thompson_ctr = clicks / users
-
-
-# =====================================
-# Results
-# =====================================
-print("Advertisement Selection using Multi-Armed Bandits")
-print("-------------------------------------------------")
-print("Users:", users)
-
-print("\nClick-Through Rate (CTR)")
-print("-------------------------")
-print("Epsilon-Greedy :", round(epsilon_ctr, 3))
-print("UCB            :", round(ucb_ctr, 3))
-print("Thompson Samp. :", round(thompson_ctr, 3))
-
-ctr = {
-    "Epsilon-Greedy": epsilon_ctr,
-    "UCB": ucb_ctr,
-    "Thompson Sampling": thompson_ctr
+# Actions
+actions = {
+    "U": (-1, 0),
+    "D": (1, 0),
+    "L": (0, -1),
+    "R": (0, 1)
 }
 
-best = max(ctr, key=ctr.get)
+# Initialize Value Function
+V = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
 
-print("\nBest Algorithm:", best)
+# Initial Policy
+policy = [["R" for _ in range(SIZE)] for _ in range(SIZE)]
+
+# Check Valid Position
+def valid(x, y):
+    return 0 <= x < SIZE and 0 <= y < SIZE and (x, y) not in OBSTACLES
+
+# Reward Function
+def reward(state):
+    if state == GOAL:
+        return 10
+    return -1
+
+stable = False
+
+while not stable:
+
+    # Policy Evaluation
+    for _ in range(eval_iterations):
+
+        newV = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
+
+        for i in range(SIZE):
+            for j in range(SIZE):
+
+                if (i, j) == GOAL or (i, j) in OBSTACLES:
+                    continue
+
+                action = policy[i][j]
+                dx, dy = actions[action]
+
+                ni = i + dx
+                nj = j + dy
+
+                if not valid(ni, nj):
+                    ni, nj = i, j
+
+                newV[i][j] = reward((ni, nj)) + gamma * V[ni][nj]
+
+        V = newV
+
+    # Policy Improvement
+    stable = True
+
+    for i in range(SIZE):
+        for j in range(SIZE):
+
+            if (i, j) == GOAL or (i, j) in OBSTACLES:
+                continue
+
+            old_action = policy[i][j]
+            best_action = old_action
+            best_value = float("-inf")
+
+            for action, (dx, dy) in actions.items():
+
+                ni = i + dx
+                nj = j + dy
+
+                if not valid(ni, nj):
+                    ni, nj = i, j
+
+                value = reward((ni, nj)) + gamma * V[ni][nj]
+
+                if value > best_value:
+                    best_value = value
+                    best_action = action
+
+            policy[i][j] = best_action
+
+            if old_action != best_action:
+                stable = False
+
+# Display Value Function
+print("\nOptimal Value Function:\n")
+for row in V:
+    for value in row:
+        print(f"{value:7.2f}", end=" ")
+    print()
+
+# Display Policy
+print("\nOptimal Policy:\n")
+for i in range(SIZE):
+    for j in range(SIZE):
+        if (i, j) == GOAL:
+            print(" G ", end=" ")
+        elif (i, j) in OBSTACLES:
+            print(" X ", end=" ")
+        else:
+            print(policy[i][j], end="  ")
+    print()
