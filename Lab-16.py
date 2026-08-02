@@ -1,25 +1,39 @@
 import numpy as np
-import random
 
-# Energy demand and production
-demand = [50, 60, 55, 70, 65]
-production = [55, 58, 60, 68, 70]
+# Number of Time Slots
+n = int(input("Enter Number of Time Slots: "))
+
+# Energy Demand
+demand = []
+print("\nEnter Energy Demand:")
+for i in range(n):
+    demand.append(float(input(f"Demand at Time {i+1}: ")))
+
+# Energy Production
+production = []
+print("\nEnter Energy Production:")
+for i in range(n):
+    production.append(float(input(f"Production at Time {i+1}: ")))
+
+# Learning Parameters
+learning_rate = float(input("\nEnter Learning Rate (e.g., 0.1): "))
+episodes = int(input("Enter Number of Episodes: "))
 
 # Actions
 actions = ["Increase", "Maintain", "Decrease"]
 
-# Policy probabilities
-policy = np.array([[0.33, 0.34, 0.33] for _ in range(len(demand))])
+# Initial Policy Probabilities
+policy = np.array([[0.33, 0.34, 0.33] for _ in range(n)])
 
-learning_rate = 0.1
+# TRPO Training (Simplified)
+for episode in range(episodes):
 
-for episode in range(100):
+    for state in range(n):
 
-    for state in range(len(demand)):
-
+        # Select Action
         action = np.random.choice(3, p=policy[state])
 
-        # Reward based on balancing supply and demand
+        # Compute Balance
         if action == 0:
             balance = production[state] + 5
         elif action == 1:
@@ -27,20 +41,24 @@ for episode in range(100):
         else:
             balance = production[state] - 5
 
+        # Reward
         reward = -abs(balance - demand[state])
 
-        # Simplified TRPO Policy Update
+        # Policy Update
         policy[state][action] += learning_rate * (reward / 100)
 
+        # Normalize Probabilities
         policy[state] = np.clip(policy[state], 0.01, 0.98)
         policy[state] /= np.sum(policy[state])
 
-print("Final Policy")
+# Display Final Policy
+print("\nFinal Policy")
 
-for i in range(len(demand)):
-    print("Time", i + 1, ":", policy[i])
+for i in range(n):
+    print(f"Time {i+1}: {policy[i]}")
 
+# Display Best Action
 print("\nBest Energy Action")
 
-for i in range(len(demand)):
-    print("Time", i + 1, "->", actions[np.argmax(policy[i])])
+for i in range(n):
+    print(f"Time {i+1} -> {actions[np.argmax(policy[i])]}")
