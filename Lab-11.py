@@ -1,18 +1,27 @@
 import numpy as np
 import random
 
-# Sample stock prices
-prices = [100, 105, 102, 108, 110, 107, 115]
+# Number of Days
+n = int(input("Enter Number of Stock Prices: "))
 
-# Q-tables (Online and Target)
+# Stock Prices
+prices = []
+for i in range(n):
+    price = float(input(f"Enter Price for Day {i+1}: "))
+    prices.append(price)
+
+# Learning Parameters
+alpha = float(input("Enter Learning Rate (e.g., 0.1): "))
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
+epsilon = float(input("Enter Epsilon (e.g., 0.2): "))
+episodes = int(input("Enter Number of Episodes: "))
+
+# Q-Tables (Online and Target)
 online_q = np.zeros((len(prices), 3))   # Hold, Buy, Sell
 target_q = np.zeros((len(prices), 3))
 
-alpha = 0.1
-gamma = 0.9
-epsilon = 0.2
-
-for episode in range(100):
+# Training
+for episode in range(episodes):
 
     holding = False
 
@@ -46,10 +55,12 @@ for episode in range(100):
     # Update Target Network
     target_q = np.copy(online_q)
 
-print("Learned Q-Table:")
+# Results
+print("\nLearned Q-Table:")
 print(online_q)
 
 actions = ["Hold", "Buy", "Sell"]
-print("\nBest action at each day:")
+
+print("\nBest Action for Each Day:")
 for i in range(len(prices)):
-    print("Day", i + 1, "Price =", prices[i], "->", actions[np.argmax(online_q[i])])
+    print(f"Day {i+1} | Price = {prices[i]} -> {actions[np.argmax(online_q[i])]}")
