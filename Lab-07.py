@@ -1,15 +1,27 @@
-# Delivery Robot - Bellman Equation (Without Matplotlib)
+# Delivery Robot - Bellman Equation
 
-SIZE = 5
+# Grid Size
+SIZE = int(input("Enter Grid Size: "))
 
-# Delivery Point
-GOAL = (4, 4)
+# Goal Position
+goal_x = int(input("Enter Goal Row: "))
+goal_y = int(input("Enter Goal Column: "))
+GOAL = (goal_x, goal_y)
 
 # Obstacles
-OBSTACLES = [(1, 2), (2, 2), (3, 1)]
+num_obstacles = int(input("Enter Number of Obstacles: "))
+OBSTACLES = []
 
-gamma = 0.9
-iterations = 20
+for i in range(num_obstacles):
+    x = int(input(f"Enter Obstacle {i+1} Row: "))
+    y = int(input(f"Enter Obstacle {i+1} Column: "))
+    OBSTACLES.append((x, y))
+
+# Discount Factor
+gamma = float(input("Enter Discount Factor (e.g., 0.9): "))
+
+# Number of Bellman Iterations
+iterations = int(input("Enter Number of Iterations: "))
 
 # Initialize Value Function
 V = [[0 for _ in range(SIZE)] for _ in range(SIZE)]
@@ -51,15 +63,15 @@ for k in range(iterations):
     V = newV
 
 # Display Value Function
-print("Delivery Robot State-Value Function")
+print("\nDelivery Robot State-Value Function")
 print("-----------------------------------")
 
 for row in V:
     for value in row:
-        print(f"{value:6.2f}", end=" ")
+        print(f"{value:7.2f}", end=" ")
     print()
 
-# Simple Grid Visualization
+# Grid Visualization
 print("\nGrid Visualization")
 print("------------------")
 
