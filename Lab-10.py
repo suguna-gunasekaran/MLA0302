@@ -1,25 +1,24 @@
 import random
 
-# Initial probability of investing
-policy = 0.5
-
-learning_rate = 0.05
-episodes = 100
+# User Inputs
+policy = float(input("Enter Initial Investment Probability (0 to 1): "))
+learning_rate = float(input("Enter Learning Rate (e.g., 0.05): "))
+episodes = int(input("Enter Number of Episodes: "))
 
 total_reward = 0
 
-print("Investment Strategy using Policy Gradient")
+print("\nInvestment Strategy using Policy Gradient")
 print("-----------------------------------------")
 
 for episode in range(1, episodes + 1):
 
-    # Select action
+    # Select Action
     if random.random() < policy:
         action = "Invest"
     else:
         action = "Do Not Invest"
 
-    # Simulate market return
+    # Simulate Market Return
     if action == "Invest":
         reward = random.choice([10, -5])   # Profit or Loss
     else:
@@ -33,7 +32,7 @@ for episode in range(1, episodes + 1):
     elif reward < 0:
         policy = policy - learning_rate * policy
 
-    # Keep probability between 0 and 1
+    # Keep Probability Between 0 and 1
     policy = max(0, min(1, policy))
 
 print("\nSimulation Completed")
