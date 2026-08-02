@@ -1,36 +1,42 @@
 import numpy as np
 import random
 
-# States: Waiting calls
-states = 5
+# User Inputs
+states = int(input("Enter Number of States: "))
+alpha = float(input("Enter Learning Rate (e.g., 0.1): "))
+episodes = int(input("Enter Number of Episodes: "))
 
-# Q-table (2 actions: Agent1, Agent2)
+reward_agent1 = float(input("Enter Reward for Agent 1: "))
+reward_agent2 = float(input("Enter Reward for Agent 2: "))
+
+# Q-table (2 actions: Agent 1, Agent 2)
 q = np.zeros((states, 2))
 
-alpha = 0.1
-
-for episode in range(100):
+# Monte Carlo Training
+for episode in range(episodes):
 
     for state in range(states):
 
+        # Randomly choose an agent
         action = random.randint(0, 1)
 
         # Reward
         if action == 0:
-            reward = 10      # Faster service
+            reward = reward_agent1
         else:
-            reward = 5       # Slower service
+            reward = reward_agent2
 
         # Monte Carlo Update
         q[state][action] = q[state][action] + alpha * (
             reward - q[state][action]
         )
 
-print("Q-Table")
+# Display Q-Table
+print("\nQ-Table")
 print(q)
 
 agents = ["Agent 1", "Agent 2"]
 
-print("\nBest Agent")
+print("\nBest Agent for Each State")
 for i in range(states):
-    print("State", i + 1, ":", agents[np.argmax(q[i])])
+    print(f"State {i+1}: {agents[np.argmax(q[i])]}")
