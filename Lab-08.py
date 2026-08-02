@@ -1,12 +1,28 @@
 import random
 
-SIZE = 5
+# Grid Size
+SIZE = int(input("Enter Grid Size: "))
 
-START = (0, 0)
-GOAL = (4, 4)
+# Start Position
+start_x = int(input("Enter Start Row: "))
+start_y = int(input("Enter Start Column: "))
+START = (start_x, start_y)
 
-OBSTACLES = [(1, 2), (2, 2), (3, 1)]
+# Goal Position
+goal_x = int(input("Enter Goal Row: "))
+goal_y = int(input("Enter Goal Column: "))
+GOAL = (goal_x, goal_y)
 
+# Obstacles
+num_obstacles = int(input("Enter Number of Obstacles: "))
+OBSTACLES = []
+
+for i in range(num_obstacles):
+    x = int(input(f"Enter Obstacle {i+1} Row: "))
+    y = int(input(f"Enter Obstacle {i+1} Column: "))
+    OBSTACLES.append((x, y))
+
+# Possible Moves
 moves = {
     "UP": (-1, 0),
     "DOWN": (1, 0),
@@ -14,19 +30,17 @@ moves = {
     "RIGHT": (0, 1)
 }
 
-
+# Check Valid Position
 def valid(x, y):
     return 0 <= x < SIZE and 0 <= y < SIZE and (x, y) not in OBSTACLES
 
-
 # ---------------- Random Policy ----------------
-
 def random_policy():
 
     pos = START
     steps = 0
 
-    print("\nRandom Policy")
+    print("\nRandom Policy Path:")
 
     while pos != GOAL and steps < 50:
 
@@ -42,19 +56,22 @@ def random_policy():
 
         steps += 1
 
+    if pos == GOAL:
+        print("Goal Reached!")
+    else:
+        print("Goal Not Reached.")
+
     print("Steps:", steps)
 
-
 # ---------------- Safe Policy ----------------
-
 def safe_policy():
 
     pos = START
     steps = 0
 
-    print("\nSafe Policy")
+    print("\nSafe Policy Path:")
 
-    while pos != GOAL:
+    while pos != GOAL and steps < 100:
 
         x, y = pos
 
@@ -70,16 +87,22 @@ def safe_policy():
         elif valid(x + 1, y):
             pos = (x + 1, y)
 
-        print(pos)
+        else:
+            break
 
+        print(pos)
         steps += 1
+
+    if pos == GOAL:
+        print("Goal Reached!")
+    else:
+        print("Goal Not Reached.")
 
     print("Steps:", steps)
 
-
-print("Autonomous Car Navigation")
+# Main Program
+print("\nAutonomous Car Navigation")
 print("-------------------------")
 
 random_policy()
-
 safe_policy()
