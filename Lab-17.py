@@ -1,23 +1,32 @@
 import numpy as np
-import random
 
-# Movies
-movies = ["Action", "Comedy", "Drama", "Sci-Fi", "Horror"]
+# Number of Movies
+n = int(input("Enter Number of Movies: "))
 
-# User feedback
-ratings = [3, 4, 2, 5, 1]
+movies = []
+ratings = []
+
+# Movie Names and Ratings
+for i in range(n):
+    movie = input(f"Enter Movie {i+1} Name: ")
+    rating = float(input(f"Enter Rating for {movie} (1-5): "))
+    movies.append(movie)
+    ratings.append(rating)
+
+# Learning Parameters
+learning_rate = float(input("Enter Learning Rate (e.g., 0.1): "))
+episodes = int(input("Enter Number of Episodes: "))
 
 # Actor Network (Recommendation Scores)
-actor = np.random.rand(len(movies))
+actor = np.random.rand(n)
 
 # Critic Network (Value Estimates)
-critic = np.zeros(len(movies))
+critic = np.zeros(n)
 
-learning_rate = 0.1
+# Actor-Critic Training
+for episode in range(episodes):
 
-for episode in range(100):
-
-    for state in range(len(movies)):
+    for state in range(n):
 
         action = actor[state]
 
@@ -31,14 +40,15 @@ for episode in range(100):
         # Actor Update
         actor[state] = actor[state] + learning_rate * critic[state] / 10
 
-print("Movie Scores")
+# Display Movie Scores
+print("\nMovie Scores")
+for i in range(n):
+    print(f"{movies[i]} : {round(actor[i], 2)}")
 
-for i in range(len(movies)):
-    print(movies[i], ":", round(actor[i], 2))
-
+# Display Recommended Movies
 print("\nRecommended Movies")
 
 order = np.argsort(actor)[::-1]
 
 for i in order:
-    print(movies[i], "Score =", round(actor[i], 2))
+    print(f"{movies[i]}  Score = {round(actor[i], 2)}")
