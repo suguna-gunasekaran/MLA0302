@@ -1,3 +1,7 @@
+# A financial institution wants to optimize its investment strategy. Use a basic policy gradient
+# method to simulate and optimize the investment policy for maximum returns. Implement
+# this in Python.
+
 import random
 
 # User Inputs
