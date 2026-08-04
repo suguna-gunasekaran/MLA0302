@@ -2,6 +2,7 @@
 # warehouse), actions (move in four directions), and rewards (picking an item: +2, reaching
 # the goal: +5, hitting an obstacle: -2). Implement a policy evaluation algorithm to determine
 # the value function for a given policy in Python.
+
 # Policy Evaluation for Warehouse Robot
 
 # Input Grid Size
