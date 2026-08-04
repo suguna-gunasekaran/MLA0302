@@ -1,3 +1,7 @@
+# Simulate an autonomous car navigating a simple road network with intersections. Design
+# policies for the car to follow traffic rules and reach the destination safely. Implement these
+# policies in Python and evaluate their effectiveness.
+
 import random
 
 # Grid Size
