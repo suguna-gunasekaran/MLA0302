@@ -1,3 +1,7 @@
+# A delivery drone needs to find the shortest path from a warehouse to multiple delivery
+# points in a city represented as a grid. Implement a policy iteration algorithm using dynamic
+# programming to find the optimal route policy in Python.
+
 # Policy Iteration for Delivery Drone
 
 # Grid Size
