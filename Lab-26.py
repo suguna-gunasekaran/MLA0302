@@ -1,3 +1,7 @@
+# Develop a recommendation system for a streaming service to suggest movies based on user
+# feedback, implemented as an MDP and trained using a Deep Deterministic Policy Gradient
+# (DDPG) algorithm.
+
 import numpy as np
 
 # Number of Movies
