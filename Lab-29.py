@@ -3,6 +3,10 @@
 # Advantage Actor-Critic for Aggressive Driving Policy
 # ============================================================
 
+# Train an AI agent to compete in autonomous vehicle racing competitions using Advantage
+# Actor-Critic (A2C) methods. Implement A2C in Python to learn aggressive driving policies
+# that optimize lap times and race performance.
+
 import numpy as np
 import random
 
