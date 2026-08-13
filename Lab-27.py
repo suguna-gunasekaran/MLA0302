@@ -1,3 +1,8 @@
+# Implement an agent that manages a financial portfolio, choosing stocks to maximize returns
+# and minimize risk using an Actor-Critic (A3C) method to optimize investment. Implement a
+# robot that navigates a maze to reach the exit, with rewards for reaching the exit and
+# penalties for hitting walls, and use REINFORCE to find the optimal navigation policy.
+
 import numpy as np
 import random
 
