@@ -1,3 +1,7 @@
+# Model a smart grid that manages energy consumption and production to minimize costs and
+# balance supply and demand using Trust Region Policy Optimization (TRPO) to optimize
+# energy management.
+
 import numpy as np
 
 # Number of Time Slots
