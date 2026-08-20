@@ -1,3 +1,8 @@
+#In an inventory management system, use Bellman’s equation to find the optimal policy for
+#ordering stock. Implement this in Python and demonstrate how the optimal policy minimizes
+#costs
+
+
 # ============================================================
 # INVENTORY MANAGEMENT USING BELLMAN'S EQUATION
 # FINDING OPTIMAL ORDERING POLICY
