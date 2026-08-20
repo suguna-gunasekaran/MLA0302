@@ -1,3 +1,8 @@
+#Use the Upper Confidence Bound (UCB) algorithm to dynamically select content for users on
+#a streaming platform. Implement the UCB algorithm in Python and compare its effectiveness
+#against other strategies.
+
+
 # ============================================================
 # RL FRAMEWORK FOR STREAMING CONTENT RECOMMENDATION
 # USING UPPER CONFIDENCE BOUND (UCB)
