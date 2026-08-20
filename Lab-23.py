@@ -1,3 +1,8 @@
+#Explain the relationship between policy and value functions using a practical gridworld
+#example. Implement this relationship in Python and visualize how different policies affect
+#the value function.
+
+
 # ============================================================
 # GRIDWORLD: POLICY AND VALUE FUNCTION
 # ============================================================
