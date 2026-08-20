@@ -1,7 +1,3 @@
-# Develop an AI agent to play a real-time strategy game (e.g., Age of Empires) using ActorCritic
-# methods. Implement the actor and critic networks in Python and train the agent to build
-# structures, gather resources, and engage in strategic combat.
-
 import numpy as np
 
 # User Input
