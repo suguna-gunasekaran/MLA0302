@@ -1,3 +1,7 @@
+#Implement an epsilon-greedy strategy to optimize content recommendations on an online
+#learning platform. Write a Python script to simulate and analyze its performance over
+#multiple runs.
+
 # ============================================================
 # RL FRAMEWORK FOR ONLINE LEARNING CONTENT RECOMMENDATION
 # ============================================================
