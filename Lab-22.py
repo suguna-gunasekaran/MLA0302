@@ -1,3 +1,8 @@
+#Simulate a k-armed bandit problem to optimize marketing campaign choices. Implement
+#epsilon-greedy, UCB, and Thompson Sampling algorithms in Python and evaluate their
+#performance.
+
+
 # ============================================================
 # K-ARMED BANDIT FOR MARKETING CAMPAIGN OPTIMIZATION
 # EPSILON-GREEDY, UCB AND THOMPSON SAMPLING
