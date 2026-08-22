@@ -1,3 +1,10 @@
+#Implement a value-equivalence prediction model to estimate the long-term performance of
+#different investment portfolios. Use historical financial data and machine learning
+#techniques to predict the value equivalence of alternative portfolio allocations. Write a
+#Python program to analyze and compare the predicted performances of various investment
+#strategies.
+
+
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
