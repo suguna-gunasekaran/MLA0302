@@ -1,3 +1,9 @@
+#A retail company aims to optimize its inventory management strategy using model-based RL.
+#Develop a data generation model that simulates customer demand patterns and inventory
+#dynamics. Use Python to generate synthetic data and evaluate different inventory
+#management policies based on the simulated environment.
+
+
 import random
 
 # -------- USER INPUT --------
