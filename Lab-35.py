@@ -1,3 +1,8 @@
+#urban environment. Implement a sampling-based planning algorithm (e.g., RRT, RRT*,
+#or PRM) to plan collision-free flight paths for the UAV while maximizing coverage and
+#minimizing detection latency. Write a Python program to simulate the UAV&#39;s surveillance
+#mission and visualize the planned paths.
+
 import random
 import math
 
