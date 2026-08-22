@@ -1,3 +1,9 @@
+#A logistics company aims to optimize its supply chain operations using model-based RL.
+#Develop a data generation model that simulates order fulfillment processes, inventory flows,
+#and transportation networks. Use Python to generate synthetic data and evaluate different
+#supply chain management policies based on the simulated environment.
+
+
 import random
 
 # -------- USER INPUT --------
