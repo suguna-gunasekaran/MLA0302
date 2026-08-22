@@ -1,3 +1,10 @@
+#A dynamic pricing platform aims to optimize its pricing strategy using model-based RL.
+#Develop a predictive model that forecasts customer demand and price sensitivities based on
+#historical sales data. Use Python to train the predictive model and implement a modelbased
+#policy optimization algorithm to dynamically adjust prices in response to changing market
+#conditions.
+
+
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
