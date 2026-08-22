@@ -1,3 +1,9 @@
+#An autonomous exploration robot needs to navigate and map an unknown environment.
+#Implement a sampling-based planning algorithm (e.g., RRT, RRT*, or PRM) to plan collision-
+#free paths for the robot to explore efficiently. Write a Python program to simulate the
+#robot&#39;s exploration process and visualize the generated paths.
+
+
 import random
 import math
 import matplotlib.pyplot as plt
