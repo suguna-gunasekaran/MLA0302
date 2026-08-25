@@ -1,3 +1,10 @@
+#Multiple agents collaborate to solve a cooperative task in a simulated environment with
+#hierarchical structure and interdependencies. Implement the MAXQ framework to
+#decompose the task into hierarchically organized subtasks and learn policies for each level of
+#the hierarchy. Write a Python program to simulate the agents&#39; interactions and evaluate
+#their performance in achieving the overall task objectives.
+
+
 import random
 
 # MAXQ hierarchical task
