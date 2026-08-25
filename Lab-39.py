@@ -1,3 +1,11 @@
+#A team of autonomous robots collaborates to accomplish a complex task (e.g., search and
+#rescue, package delivery) in a dynamic and uncertain environment. Implement multiagent
+#reinforcement learning algorithms (e.g., MADDPG, COMA) to enable the robots to
+#coordinate their actions and achieve collective objectives efficiently. Write a Python
+#program to simulate the robots&#39; interactions and evaluate their performance in completing
+#the task.
+
+
 import random
 
 print("MULTI-AGENT REINFORCEMENT LEARNING")
