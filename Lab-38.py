@@ -1,3 +1,11 @@
+#An adaptive control system aims to adapt its control policy to different operating conditions
+#and environmental changes without explicit retraining. Implement a metalearning approach
+#to enable the control system to learn how to adapt its parameters and structure based on
+#past experiences and performance feedback. Write a Python program to simulate the
+#control system&#39;s adaptation process and evaluate its performance under various conditions.
+
+
+
 import random
 
 print("META-LEARNING ADAPTIVE CONTROL SYSTEM")
