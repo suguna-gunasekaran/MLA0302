@@ -1,3 +1,10 @@
+#An autonomous robot navigates through a partially observable environment with limited
+#sensor information and uncertainty. Implement a partially observable Markov decision
+#process (POMDP) framework to enable the robot to localize itself and plan navigation
+#actions robustly under partial observability. Write a Python program to simulate the robot&#39;s
+#navigation process and evaluate its performance in different scenarios.
+
+
 import random
 
 print("POMDP ROBOT NAVIGATION")
